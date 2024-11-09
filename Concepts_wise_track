@@ -1,0 +1,494 @@
+On every concept,do the following three things:
+
+1) Read your notes --> done --> need to read one more time -->
+2) Read k8s doument on concept --> which help in exam to find required data quickly --> done
+3) Do practice of scanario based questions --> doen --> need to practice one more time
+
+=========================================================
+Done:
+
+pods --> creation of pod using imparative command.
+         adding configmap,secret data as env.
+         volume mount from pvc.
+Pod:
+
+1) Create pod called nginx-pod using nginx:1.16,have container name as my-nginx,
+mount the USERNAME from configmap and PASSWORD from secret.
+create cm and secret for username and password respectively.
+add the resouces as cpu is 200m memory as 250Mi for request.  --> 7min
+
+2) create pod called busybox-pod with busybox and container name is busybox with sleep 3600 command.
+mount the /etc/data into pvc called busybox-pvc and create required pv for pvc.
+  --> 15min  -->13min --> 14min  --> 8min --> 7.5min
+
+
+3) create pod called redis-pod with redis:alpine and container name is redis,have resouces as cpu is 500m,memory 250Mi as request.
+cpu is 1 and memory as 1Gi. schedule it on node01 using node affinity.
+take value from configmap for the  TIME env.  --> 9min  --> 7min --> 7min
+
+4) create pod called nginx-pod with nginx image in ngixn namespace,add service account nginx into pod.
+add readiness into check 80 port after 10 and liveness check for 80 port after 12 for every 30 second. --> 6min  --> 3.5min
+
+5) create pod called busybox-pod with busybox image,run the container with 65534 user and have some capabilities.
+have resource cpu is 500m and memory 500Mi as request  --> 15min  --> 6min
+
+replicaset --> creation of rc using imparative command.
+
+deployment --> creation of deployment using imparative command.
+
+1) create deployment called nginx-deploy using image nginx:1.16, add readiness and liveness into 80.
+have resource cpu is 400m and memory 500Mi as request,add env USER from confimap.
+create pv called nginx-pv and pvc called nginx-pvc, mount /var/nginx into pv. --> 15min --> 17min  --> 10min
+
+
+2) create deployment called busybox-deploy with image busybox:1.36,run with nonrootuser, add capabilitie,  
+redirect the date command output into /etc/mylog path.
+have liveness(60 as initial delay and 15 ) and readiness(15 initial delay) to do ls /etc/mylog.
+run the depployment with busybox service account,resouces as cpu is 300m,memory is 400Mi as request and cpu is 500m and memory 1Gi.
+--> 13min  --> 12min  --> 12min
+
+3) create deployment called redis-deployment with redis:alpine,add env PORT from cm, DATABASE from secret.
+command as sleep 5600,schedule it on node01 using node selector. --> 13min  --> 7min
+
+env   --> in k8s document,search configmap if you want to inject single env from secret or config.  --> done
+          search envFrom key to inject all data from configmap or secret at a time
+          search configure configmap into pod in k8s document to mount configmap as volume
+
+          for secret aslo,take confimap reference,replace wherever configmap with secret
+
+          injecting env as plain key value
+          injecting env from configmap
+          injecting env from secret   
+           
+    env:
+    - name: COUNTRY
+      value: "India"
+    - name: USERNAME
+      valueFrom:
+        configMapKeyRef:
+          name: env1
+          key: USERNAME
+    - name: PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: sr
+          key: password
+    envFrom:
+    - configMapRef:
+        name: envs
+    - secretRef:
+        name: my-secret
+
+
+entrypoint,cmd in docker and command,args in kubernetes --> need to read the our notes -->
+
+command: ["/bin/bash","-c","sleep 360"] 
+ or
+command: ["/bin/bash"]
+args: ["-c","sleep 3600"] 
+
+configmap  --> creation of cm using imparative command from liter,file and env --> 
+               k create cm cmfromfile --from-file=file
+               k create cm fileenv --from-env-file=file.env
+               k create cm fileenv --from-literal=Name=Raghu
+
+              mount the configmap as volume
+
+                   volumeMounts:
+                   - name: cmdata
+                     mountPath: "/etc/foo"
+                     readOnly: true
+                 volumes:
+                 - name: cmdata
+                   configMap:
+                     name: game-demo
+
+               if we want to inject the configmap as env,search in configmap document
+
+secret  --> creation of secret using imparative command from liter,file and env
+            
+             kubectl create secret generic testsecret --from-literal=password='Raghu@123' --from-literal=dbpassword='DB@123'
+               
+                   volumeMounts:
+                   - name: secretdata
+                     mountPath: "/etc/foo"
+                     readOnly: true
+                 volumes:
+                 - name: secretdata
+                   secret:
+                     secretName: game-demo
+               
+             if we want to inject the secret as env,search in configmap document,replace confimap with secret
+             
+             search as secret in k8s document.
+
+Enabling external encryption for confimap and secrets  --> done --> we have kubenetes document, need to follow if it is asked in exam
+
+security context --> we can add security context in both pod and container level.
+                     we can add as which user containers need to run.
+                     capabilities are only supported in container level  --> went through the k8s document --> done
+
+service account --> creation of service account,attaching role,using service account in pod 
+                    *kubectl create sa podsadeploy
+                    *kubectl create role podrole --verb=get,list,watch,patch,update,create,delete --resource=po,deploy
+                    we can do dru-run for role also
+                    *kubectl create rolebinding sarolebinding --role=podroledeploy --serviceaccount=default:podsadeploy
+                    
+                    in k8s document,search as configure sa into pod--> get document to configure sa into pod
+
+resources --> adding resources into pod  --> search resouces in k8s document
+              creation of limit range --> limitrange used for resouces within namespace --> 
+              In document,they given example for cup,add memory under cpu to create limitrange for memory also
+
+              apiVersion: v1
+              kind: LimitRange
+              metadata:
+                name: cpu-resource-constraint
+              spec:
+                limits:
+                - default: 
+                    cpu: 500m
+                    memory: 250Mi
+                  defaultRequest: 
+                    cpu: 500m
+                    memory: 100Mi
+                  max: 
+                    cpu: "1"
+                    memory: 1Gi
+                  min:
+                    cpu: 100m
+                    memory: 100Mi
+                  type: Container
+  
+              supported type are Container or Pod
+
+              creation of resource quota --> resource quota will be used for namespace level,
+              
+              At the time of creating limitrange or resource quota,pass namespace 
+
+Taints and toleration ---> adding and deleting taints into node using imparative command,
+                           kubectl taint node <name_of_node> key=value:effect_name  --> adding taint
+                           kubectl taint node <name_of_node> key:effect_name-  --> removing taint
+
+                           addding toleration into pods,then test by rejecting pod which don't toleration
+                           
+                           search taints in k8s document,you will get it
+
+node selector -->  adding and deleting label into node using imparative command.
+
+                   kubectl label node <node_name> key=value --> adding label, we can't add mutiple values into single key
+                        
+                   kubectl label node <node_name> key- --> removing the label
+
+                   using node selector in pod --> search as node selector in k8s document
+               
+                   we can use -l(label) option to filter the resources
+                   kubectl get po -l app=nginx
+
+node affinity -->  adding and deleting node labels and using in pod to schedule
+
+                   search as node affinity in k8s--> you will get it
+
+sidecar,ambassador,Adaptor containers are skiped
+
+init container --> create pod with init container  --> search as init container in k8s document
+
+readiness,liveness probes  --> add readinessprobe and livenessprobe in pod with all three cases
+                               thare are exec
+                               		 tcpSocket
+                                         httpGet
+                               search for liveness in document,copy liveness section,paste it.
+                               for readiness,copy liveness section,replace live with readi 
+
+container logs  ---> In docker, docker logs <name_or_id_of_container>
+                     In kubernetes, kubectl logs pod <name_of_pod>
+                     add -f option to watch the live logs for both docker and kubectl command
+
+metrics service  --> is in-memory monitorning tool,we can install in cluster get metrics data
+                     In cluster,kubelet contains the c-advisor,c-advaisor is responsible for collecting the data from pod and send to master 
+                     through api.
+
+                     clone the metric server repo, run the kubectl create command to folder which have all yamls
+                     
+                     below commands works only if we installed metrics server on cluster
+                     $ kubectl top nodes
+                     $ kuebctl top pods
+  	    	     $ kubectl top pods --sort-by=memory
+                     $ kubectl top pods --sort-by=cpu
+
+labels and selectors in kubernetes --> learn adding labels to resouces,node using imparative command
+                                       we can add labels into any resources,like pod,node,svc
+				 	
+                                       kubectl label node <name_of_node> key=value  --> adding the label to node
+                        	       kubectl label node <name_of_node> key-  --> removing the label from node
+
+                                       kubectl label po <name_of_pod> key=value  --> kubectl label po nginx-pod app=nginx  --> adding label into pod
+                                       kubectl label po <name_of_pod> key-   --> kubectl label po nginx-po app-
+
+
+                                       At the time of pod creation,we can add the label
+                                       kubectl run nginx --image=nginx --labels=app=nginx --port=80
+  
+                                       kubectl get <resource_type> -l key=value  --> kubectl get po -l app=nginx --> listing the pod with labels matches
+                                                                                     kubectl get svc -l app=nginx
+
+Rollingupdate and Rollback in deployment --> create deployment,perform the rolling update and rollback
+                                             rollback to specific revision
+                                           
+                                             1) create deployment called nginx-update with rolling update stratergy with 10 replicas,
+                                                 have max surge 4 and maxunavailable 2. add the liveness and readiness and
+                                                 resouces cpu as 100m and memory as 100Mi,add node selector  --> 10min --> 8min
+
+                                             2) Create deployment called nginx-deploy-16 with image nginx:1.16 10 replicas,
+                                                add node affinity and toleration to schedule on control plane
+                                                create service for above deployment with nodeport type  --> 10min,12min with performing rollout 
+						
+        				        run the rollout command to test.
+						update the nginx image into nginx,
+                                                rollback into previous version
+                                                 
+                                                kubectl rollout status deploy nginx-deploy-16
+						kubectl rollout history deploy nginx-deploy-16
+						kubectl undo deploy nginx-deploy-16
+						kubectl undo deploy nginx-deploy-16 --to-revision=<revision_number>  
+
+Bluegreen deployment --> practice here in below question
+                     --> https://github.com/jamesbuckett/ckad-questions/blob/main/03-ckad-deployment.md#03-05-canary-deployment-question
+                     --> practice in lighting lab 1 and lab2  --> 10min
+                        
+                         1) create deployment calles nginx-v1 with nginx:1.16 image with 10 replicas by labels app=nginx1
+                           ,create service for this.once all pods of nginx-v1 are up,create another deployment with nginx image with label 
+                            app=rollingupdate same replicas. point the service to second deployment, delete first deployment --> 10min 8min
+
+
+Canary deployment --> 1) create deploy called nginx-old with nginx:1.16 image as 10 replicas,have label as app=nginx.
+                         create service for that deployment.
+                         create another deployment called nginx-new with nginx image with same label,
+                        distribute the 60% into old deployment and 40% into new deployment.  --> 5min --> 8min
+                         
+                      Note: 100% will total number of old instance,we have delete some in old,create same amount of instaces with new image.
+
+Jobs --> create jobs using imparative command. 
+         read k8s document --> done (learnt below new fields in job spec)
+    
+ 	 kubectl create job <name_of_job> --image=<image_name> -- /bin/bash -c 'sleep 3600' --dry-run=client -o yaml 
+         
+         kubectl create job <name_of_job> --from=cronjob/<cronjob_name>
+
+job example yaml:
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  completions: 20
+  activeDeadlineSeconds: 180
+  backoffLimit: 15
+  completionMode: Indexed
+  backoffLimitPerIndex: 2
+  maxFailedIndexes: 15
+  parallelism: 2
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: perl:5.34.0
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+      restartPolicy: Never
+
+         below all three come under job spec level:
+
+         1) completions:  parameter will define how many times the task need to be performed by creating the pods.
+         Ex: completions: 3 --> job create three pods sequential,perform the task and mark pod as completed if no error.
+             by default job will not go to second po creation if task in first pod fails. previous pod has to be completed successfully 
+             then  only create next pod.
+     
+         2)activeDeadlineSeconds: if job is not completed  within seconds mentioned to activeDeadlineSeconds,job will be considered as failure
+         
+         3) parallelism: how many pods need to be created at time,this will change default behaviour of job.
+         Ex: parallelism: 2 completions: 10 , create two pods,wait to complete that two pods,once that two pods completed,
+        create another two pods untill 10 pods completed
+ 
+         4) backoffLimit: when to consider job to be failure depends on backoffLimit if we used in job spec.
+            The failure status added into job when number of pod failures are eqaul backupLimit.
+            if we don't mention backoffLimit,on first failure only job status will be marked as failure.
+
+         5) completionMode: values are "Indexed" and "NonIndexed"(default), pods of job are assosiated with index from 0 to completions-1
+    
+         6) backoffLimitPerIndex: --> how many failures need to considered per pod created by job,
+            after this many failures job will be marked as failure.
+ 
+         7) maxFailedIndexes: 5 --> In total pods of job,how many failure need to considered.
+        
+         Remember all above 7 keys to write in job,instead of searching from k8s document.
+
+         create job from imparative command,update required  keys manually instead of searching from k8s document           
+
+Cronjobs: -->  create cronjob using imaparative command
+              read k8s document --> done 
+ 
+              use the schedule syntax given in k8s document
+ 
+              # ┌───────────── minute (0 - 59)
+              # │ ┌───────────── hour (0 - 23)
+              # │ │ ┌───────────── day of the month (1 - 31)
+              # │ │ │ ┌───────────── month (1 - 12)
+              # │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+              # │ │ │ │ │                                   OR sun, mon, tue, wed, thu, fri, sat
+              # │ │ │ │ │ 
+              # │ │ │ │ │
+              # * * * * *
+
+              */1 * * * * or * * * * * --> schedule on every one minutes
+              */5 * * * * --> schedule on evry 5 minutes
+   
+              0 in second place is 12AM and 12 in second place is 12PM
+
+              0  --> 12AM
+              1  --> 1AM
+              .
+              .
+              13 --> 1PM
+              .
+              .
+              22 --> 10PM
+              23 --> 11PM
+
+              kubectl create cronjob cj --image=perl --dry-run=client -o yaml --schedule='*/1 * * * *' 
+ 
+              under spec of cronjob:
+              
+              1) startingDeadlineSeconds: if job is not started within seconds mentioned in startingDeadlineSeconds,
+              the CronJob skips that instance of the Job (future occurrences are still scheduled). 
+
+              ex: if it set to 200,
+              once we scheduled cronjob,if job not created within 200 seconds,cronjob skip that instance of job.
+              For Jobs that miss their configured deadline, Kubernetes treats them as failed Jobs.
+              
+              2) spec.concurrencyPolicy --> Allow -->  The CronJob allows concurrently running Jobs ,  
+                                            Forbid --> don't allow new jobs to be running if old jobs still running
+                                                       skip the new jobs running
+                                            Replace --> if old jobs are still running,delete them and schedule new jobs
+ 
+              3) spec.successfulJobsHistoryLimit  --> how many successfull jobs need to kept
+ 
+              4) spec.failedJobsHistoryLimit --> how many failure jobs need to kept
+ 
+              5) spec.jobTemplate  --> the template for jobs that cronjob creates and it is required.
+                                        it has exactly same schema as job and expect dont have apiversion and kind
+
+             you are making the mistake while writing the keys in jobs and cronjobs, use kubectl explain command to get keys 
+
+             kubectl explain job.spec  --> give all supported keys like completions,parallelism,activeDeadlineSeconds etc
+
+             kubectl explain cronjob.spec --> give all supported keys like startingDeadlineSeconds etc
+
+
+services --> create service using kubectl create and expose command --> practice commands in 0.kubectl_imparative_commands file
+
+ingress  --> Before going to actual exam, need take that practice test
+             create all type of ingress rules using k8s document
+             
+re-write options in ingess --> understand what is re-write option --> done
+
+Network policy: Ingress and Egress
+                practice questions in lighting lab and repo https://github.com/ahmetb/kubernetes-network-policy-recipes
+
+volumes --> Mounting data using configmap, mount dir from host machine and mount file from host machine 
+            
+            create pod called nginx-pod,mount the data from redis-config cm and redis-secret secret.
+            mount the /etc/nginx into pod level using emptyDir, schedule pod on control plane and node affinity  --> 10min
+                      
+                volumes:
+                - name: cmdata
+                  configMap:
+                    name: redis-config
+                - name: secretdata
+                  secret:
+                    secretName: redis-secret
+                - name: nginx-data
+                  emptyDir: {}
+                - name: pvcdata
+                  persistentVolumeClaim:
+                     claimName: <name_of_pvc>
+
+                           volumeMounts:
+                           - name: cmdata
+                             mountPath: /etc/cmdata 
+
+PV and PVC  --> creating the pv,pvc using k8s document --> kubectl explain pv.spec and kubectl explain pvc.spec 
+                --> get k8s document link 
+                --> practice the pod questions first question in pod section and first question in deployment section
+
+how to use kubeconfig file  --> practice commands in 0.kubectl_imparative_commands file --> done
+
+RBAC --> creation of role,rolebinding using imparative command.
+         add permission to existing role. 
+         updating the role resouces.  --> practice commands in 0.kubectl_imparative_commands file
+
+Admission controller  --> *may they will ask to enable/disable admisson controllers. open the kube api yaml file which is present in /etc/kuberntes/manifest and check for --enable-admission-plugin option, add or remove the name of admission controller based on question
+
+                      --> ps -ef | grep kube-apiserver | grep admission-plugins
+
+API Versions  --> alpha, beta and GA(generally available)
+
+API Deprecation --> 
+    API Deprecation policy Rules:
+    1) API element may only removed by incrementing version of api group.
+        Ex: we have introduced one api in alpha version,but it don't go well.
+            we need to remove that api element in next version of api.
+    2) If user currently using one api version,but he want to create the object which support in previous version.
+       he should able to create object using previous api version.
+    3) Any stable api version can not be removed untill next stable api version introduced. 
+    4a) There is time period set to keep support feature based on release type. 
+        Ex: if any api introduced in GA release,that feature need to support till next 12 months or 3 releases whichever is longer.
+        GA: 12 months or 3 releases(whichever is longer)
+        
+        If any api introduced in Beta release,that feature need to support till next 9 months or 3 releases whichever is longer
+        Beta: 9 Months or 3 releases (whichever is longer)
+
+        If any api introduced in alpha release,there is no rule to keep support that in next any release
+        Alpha: 0 releases       
+   4b) we can't consider the new api version in any release as preferred and storage version.
+       Ex:
+        we have release v1beta1 in x+3 version of kubernetes.
+        In next version x+4, we have release v1beta2, then v1beta1 is preffered and storage api.
+   
+Custom resource definition --> To work with Custom resource,there will two important things,
+                               1) custom resource defintion  --> this will validate yaml defintion of custom resouce
+                               2) custom controller --> once validated, create custom object and update etcd,
+                                  then keep on listen for custom object request.
+                               understand the yaml file of custom resource defintion.
+                               create custom resource using reading crd yaml
+
+Operator framework: operator framework is used to combine custom resource defintion and custom controller to install it as single entiry.
+
+                    there is website called operators hub to download many custom resouce,install and use it.
+                    https://operatorhub.io/
+========================================================
+Next upcoming topics:
+
+helm
+
+Need to practice kubectl auth command --->
+
+do practice the admission controller,update stratergy,ingress,networkpoli ,crd in killer code scanarious
+
+lightening lab 1 --> completed by taking the time of 45min but should complete it in 30min
+                     1 --> 1h
+                     2 --> 45min
+                     3 --> 45min
+                     4 --> 39min
+                     5 --> 35min
+                     6 --> 29min
+
+lightening lab 2 --> completed by taking the time of 45min but should complete it in 30min
+                     1 --> 1h
+                     2 --> 45min
+                     3 --> 40min
+                     4 --> 23min + 5min(extrac already know)  --> 28min --> good 
+
+mock exam 1 --> completed on 33min --> all 14 questions
+
+mock exam 2 --> completed on 33min --> all 9 questions but questions are lengthy

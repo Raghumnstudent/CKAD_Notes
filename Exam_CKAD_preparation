@@ -1,0 +1,87 @@
+
+Every day 3h practice for 20 days practice:
+
+started 14-sep-2024  --> complete on 05-oct-2024 and take test on sunday 06-oct-2024
+
+================================================================================
+How cloudchamp guy passed the example details:
+
+https://cloudchamp.notion.site/How-I-passed-my-CKAD-66dbb1d5faea4b41a8b90af1f24a4966
+
+===============================================================================================
+
+familiarize with vim editor using this documemt --> read all shorcuts document in prace/0.0.vim_shortcuts file  
+
+===============================================================================================
+
+Revice the concepts and Practice these questions:
+
+https://github.com/dgkanatsios/CKAD-exercises  --> concepts for exacises  --> Best practice questions --> done  
+
+https://github.com/jamesbuckett/ckad-questions/tree/main --> ckad questions --> Best practice questions --> done 
+
+https://github.com/aleti-pavan/ckad-practice-questions  --> practice questions --> diffult level is simple -->  done 
+
+https://github.com/ahmetb/kubernetes-network-policy-recipes --> network policy in kubernetes  ---> done
+
+https://www.linkedin.com/pulse/my-ckad-exam-experience-atharva-chauthaiwale/
+
+https://medium.com/@harioverhere/ckad-certified-kubernetes-application-developer-my-journey-3afb0901014
+
+https://github.com/jamesbuckett/ckad-tips/tree/main  --> tips of ckad exam
+
+===============================================================================================
+
+## REAL Questions in my CKAD Exam
+
+- Canary deployment to distribute traffic in a 60-40 percent split.
+- NetworkPolicy to allow specific traffic.
+- Troubleshooting ingress issues.
+- Fixing service account permissions to read Pods.
+- Exporting built container images in OCI format.
+- Setting up readiness probes for Pods.
+- Defining resource limits and requests for containers.
+- Configuring security contexts for Pods and containers.
+- Working with deprecated APIs.
+- Implementing `maxSurge` and `maxUnavailable` parameters for rolling deployments.
+- Creating, editing, and rolling back Deployments.
+- Assigning service accounts to a Deployment.
+- Creating a CronJob with specific settings and executing it at least once.
+
+Need to learn below things:
+
+crontab expression.
+percentage calculation.
+===============================================================================================
+
+Online Resources to practice:
+
+https://www.youtube.com/watch?v=hQ079LcUxcQ  --> done  --> using Killercoda online cluster
+
+===============================================================================================
+
+Important kubectl command video: 
+
+https://www.youtube.com/watch?v=wS277TdV3f8  ---> done
+
+Tips:
+
+1) **Familiarize Yourself with Documentation**: Practice using the Kubernetes documentation efficiently.
+2) **Master kubectl Commands**: Know all the important `kubectl` commands by heart.
+3) **Read Questions Carefully**: Understand the questions thoroughly and solve the easy ones first. --> spend 1min to 1.5min
+4) **Use Ctl+F**: To search the topic in kubernetes document and take code from example in document and 
+   past it into your yaml using vim editor. In example the browser is firefox, search tab will come in buttom left.
+5) **Practice**: Use platforms like Killercoda or Minikube for practice exams before taking the real exam.
+6) Mark the question as review, if you feel it is deficult, solve easy questions first, then come back to marked as review questions.
+7) Do not leave a question, partial marks will be given for partial completion.
+8)  Focus on the high % tasks first.
+9) If you have stuck with a problem, flag that and move onto next one.
+10) Restart your laptop a day before the exam. ( I didn't restart mine for a month and slowed down during the last 40 minutes of exam)
+11) Imperative commands are your oxygen. practice ! practice ! practice !
+12) Bookmark the k8s documentation pages
+13) The exam is all about your speed of implementing the kubernets based tasks. 
+14) Read the questions very carefully, questions may have more than one sub tasks to solve, Don't miss those sub tasks, they will cost the partial marks for you.
+
+===============================================================================================
+
+We can dicover the badges,skills and organization in https://info.credly.com/ 

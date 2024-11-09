@@ -1,0 +1,121 @@
+
+1)create pod,deploy,job,cronjob,cm,secret,sa,service yaml/object from imparative command
+
+2)add env,envFrom,volumes,volumeMounts,node selector,resources manually, instead of seaching in k8s document
+  
+  practice writing above specifications daily
+
+3) use the kubectl explain command for job,cronjob,pv and pvc to get details on supported keys
+   
+   * kubectl explain pv.spec | grep -i http --> list k8s document link,use the first link
+     it directly take into pv k8s document
+  
+   * kubectl explain pvc.spec | grep -i http --> list k8s document link,use the first link
+
+   * kubectl explain job.spec --> copy all required keys into cmd,then copy all keys from terminal,
+                     go to file,then paste it  and for job yaml take it from k8s document
+   * kubectl explain cronjob.spec --> copy all required keys into cmd,then copy all keys from terminal,
+                     go to file,then paste it
+
+4) netpol,ingress,liveness,readiness,affinity,tolerations,securityContext details from k8s document
+
+5) use the k8s document for creation of resource quota and limirange
+
+6) search network policy in k8s document,choose the declare network policy(second link) document, command to create temp po is there , search as test access --> it will bring into that command
+     use that command to create and test connection from temp pod
+
+7) for below topic,do practice in lab,killer code scanarious
+
+   *kubeconfig command usage --> read and practice 0.1 kubectl commmand file
+
+   *RBAC
+
+   *API versions and API deprecation --> in kubernetes document,search as api deprecation --> i will get --runtime-config option 
+   --> take backup of kube-apiserver.yaml, add the --runtime-config=rbac.authorization.k8s.io/v1alpha1
+   to enable the v1alpha1 version
+   --> kubectl convert -f <path_to_file> --output-version=<api_version> or
+       kubectl convert -f <path_to_file> --> it will add stable api version and give it in yaml format
+
+   
+   *Admission controller  --> search admimission controller in k8s document,you will get flags to enable and disable admission controllers
+
+   *custom resource 
+   --> in k8s document,they given example yaml file for crd,
+       use that to do correction on wrongly given file.
+   --> name of any custom resource definition is combination of <pural>.<group-name>
+   --> once you created custom resource,run kubectl get <shortname_of_that_resouce> --> if get no resource found,
+       then conclude as deployed successfully
+   --> At the time of custom resource creation,use the group value followed by version into API version
+
+    ex:
+       In crd file, groupname is stable.example.com  and version is v1 then apiVersion for custom object is stable.example.com/v1
+
+crd file
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: operators.stable.example.com
+spec:
+  group: stable.example.com
+  scope: Namespaced
+  names:
+    plural: operators
+    singular: operator
+    kind: Operator
+    shortNames:
+    - op
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              email:
+                type: string
+              age:
+                type: integer
+
+custom object file
+
+apiVersion: stable.example.com/v1
+kind: Operator
+metadata:
+  name: operator-simple
+spec:
+  email: g@gmail.com
+  age: 23
+
+i only created the crd file with reference of k8s document and custom object
+
+question: https://github.com/dgkanatsios/CKAD-exercises/blob/main/i.crd.md#crd-in-k8s
+
+
+   *Deployment stratergies  --> read notes on 0.kuberntes commands file
+
+To do tasks in four days:
+6)  * practice --> all three repo once--> first repo two times done,second repo 2 times, third repo 2 times
+    * take lighting labs ---> 1 time 
+    * take mack exam 1 --> 1 time
+    * take mack exam 2 --> 1 time
+    * revise the track file and commands once
+    * killer coda scanorios
+    * take killshell exam on one day prior to exam(on friday evening and saturday morning)
+
+oct 23 --> 4h
+
+oct 24 --> 3h + 1.5h --> 5.5h
+
+oct 25 --> aimed to practice 5h but did 6h 15min (3h completed + 3h 15min) --> revised track file,practiced first repo for 3rd time 
+( very taught to complete )
+ 
+oct 26 --> 2h 2h 2h killer shell sessions and 1h command revise (total 7h)
+          --> killer shell questions --> session 1 --> 2 times and sesssion 2 ---> 1 time, 
+         revised kubectl commands file
+
+oct 27 --> revise all commands,vim shortcuts,practice manually adding concepts env,envFrom,volumes,volumeMounts,jobs and cj

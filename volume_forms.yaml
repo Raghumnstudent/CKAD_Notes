@@ -1,0 +1,17 @@
+volumes:
+- name: data-pv
+  persistentVolumeClaim:
+     claimName: my-pvc
+- name: cmdata
+  configMap:
+    name: cm
+- name: secretdata
+  secret:
+    secretName:
+
+- name: empty
+  emptyDir: {}
+
+             volumeMounts:
+             - name: data-pv
+               mountPath: /etc/my-data

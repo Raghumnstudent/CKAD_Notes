@@ -1,0 +1,30 @@
+env:
+- name: USERNAME
+  value: "Raghu"
+
+- name: USER
+  valueFrom:
+     configMapKeyRef:
+       name: cmdata
+       key: user
+
+- name: PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: secretdata
+      key: Password
+
+envFrom:
+- configMapRef:
+    name: cmdata
+
+- secretRef:
+    name: secretdata
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: 250Mi
+  limits:
+    cpu: "300m"
+    memory: 500Mi
