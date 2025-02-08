@@ -3,6 +3,8 @@ Every day 3h practice for 20 days practice:
 
 started 14-sep-2024  --> complete on 05-oct-2024 and take test on sunday 06-oct-2024
 
+but i took exam on 28 oct and got passed in first attempt
+
 ================================================================================
 How cloudchamp guy passed the example details:
 
@@ -10,7 +12,7 @@ https://cloudchamp.notion.site/How-I-passed-my-CKAD-66dbb1d5faea4b41a8b90af1f24a
 
 ===============================================================================================
 
-familiarize with vim editor using this documemt --> read all shorcuts document in prace/0.0.vim_shortcuts file  
+familiarize with vim editor using this documemt --> read all shorcuts document in 0.0.vim_shortcuts file  
 
 ===============================================================================================
 
@@ -48,10 +50,7 @@ https://github.com/jamesbuckett/ckad-tips/tree/main  --> tips of ckad exam
 - Assigning service accounts to a Deployment.
 - Creating a CronJob with specific settings and executing it at least once.
 
-Need to learn below things:
 
-crontab expression.
-percentage calculation.
 ===============================================================================================
 
 Online Resources to practice:
@@ -85,3 +84,5 @@ Tips:
 ===============================================================================================
 
 We can dicover the badges,skills and organization in https://info.credly.com/ 
+
+

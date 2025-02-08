@@ -39,6 +39,9 @@ Shift + G  --> go to last line of the file
 
 :<line_number>  --> go to that line number line  --> :2  --> going to second line
 
+vim -p <path_to_file1> <path_to_file2> --> this will open two files in different tabs, when you need to go to next tab using press gt,
+gt: Switch to the next tab.
+
 /pod  -->  search the pod word in current file forward direction
 
 ?pod  --> search the pod word in current file backward direction
@@ -63,9 +66,9 @@ a  --> insert after current charactor
 
 Shift + $ --> jump to end of line
 
-b  --> go to Beginning of current
+b  --> go to Beginning of current and beginning of previous word when we type b mutiple times, 1st type b will go to beginning of current word, 2nd type b will go to beginning of previous, so on
 
-e  --> go to end of current word
+e  --> go to End of current word and end next word
 
 w  --> go to Beginning of next world
 
